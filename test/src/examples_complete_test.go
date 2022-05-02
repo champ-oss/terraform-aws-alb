@@ -28,22 +28,12 @@ func TestExamplesComplete(t *testing.T) {
 	}
 	defer terraform.Destroy(t, terraformOptions)
 
-	t.Run("apply and idempotent", func(t *testing.T) {
-		terraform.InitAndApplyAndIdempotent(t, terraformOptions)
-		bucket = terraform.Output(t, terraformOptions, "bucket")
-	})
+	terraform.InitAndApplyAndIdempotent(t, terraformOptions)
+	bucket = terraform.Output(t, terraformOptions, "bucket")
 
-	t.Run("test http", func(t *testing.T) {
-		httpTest(t, "http://terraform-aws-alb.oss.champtest.net")
-	})
-
-	t.Run("test https", func(t *testing.T) {
-		httpTest(t, "https://terraform-aws-alb.oss.champtest.net")
-	})
-
-	t.Run("test s3 logging", func(t *testing.T) {
-		bucketTest(t, bucket)
-	})
+	httpTest(t, "http://terraform-aws-alb.oss.champtest.net")
+	httpTest(t, "https://terraform-aws-alb.oss.champtest.net")
+	bucketTest(t, bucket)
 }
 
 // httpTest calls the given url and ensures a successful response
