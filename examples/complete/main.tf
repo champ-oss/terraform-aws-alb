@@ -49,7 +49,6 @@ module "lambda" {
   handler            = "app.handler"
   runtime            = "python3.9"
   vpc_id             = module.vpc.vpc_id
-  public_subnet_ids  = module.vpc.public_subnets_ids
   private_subnet_ids = module.vpc.private_subnets_ids
   zone_id            = data.aws_route53_zone.this.zone_id
 
