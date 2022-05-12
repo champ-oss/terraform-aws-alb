@@ -11,16 +11,18 @@ data "aws_route53_zone" "this" {
 }
 
 module "vpc" {
-  source                   = "github.com/champ-oss/terraform-aws-vpc.git?ref=v1.0.4-bfc0ea5"
+  source                   = "github.com/champ-oss/terraform-aws-vpc.git?ref=5698f3883b8a8852c74600d96c210695a9edb07c"
   git                      = local.git
   availability_zones_count = 2
   retention_in_days        = 1
+  create_private_subnets   = false
 }
 
 module "acm" {
   source            = "github.com/champ-oss/terraform-aws-acm.git?ref=v1.0.1-1cb7679"
   git               = local.git
-  domain_name       = data.aws_route53_zone.this.name
+  domain_name       = "terraform-aws-alb.${data.aws_route53_zone.this.name}"
+  create_wildcard   = false
   zone_id           = data.aws_route53_zone.this.zone_id
   enable_validation = true
 }
@@ -49,7 +51,7 @@ module "lambda" {
   handler            = "app.handler"
   runtime            = "python3.9"
   vpc_id             = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.private_subnets_ids
+  private_subnet_ids = module.vpc.public_subnets_ids
   zone_id            = data.aws_route53_zone.this.zone_id
 
   # Make the lambda public by attaching to the ALB
