@@ -18,7 +18,7 @@ module "vpc" {
 }
 
 module "acm" {
-  source            = "github.com/champ-oss/terraform-aws-acm.git?ref=v1.0.1-1cb7679"
+  source            = "github.com/champ-oss/terraform-aws-acm.git?ref=v1.0.8-45ac9b3"
   git               = local.git
   domain_name       = data.aws_route53_zone.this.name
   zone_id           = data.aws_route53_zone.this.zone_id
