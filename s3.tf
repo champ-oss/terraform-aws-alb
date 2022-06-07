@@ -7,4 +7,5 @@ module "s3" {
   expiration_lifecycle_enabled = true
   expiration_lifecycle_days    = var.log_retention
   expiration_lifecycle_prefix  = "/"
+  tags                         = merge(local.tags, var.tags)
 }
