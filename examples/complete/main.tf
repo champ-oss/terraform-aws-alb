@@ -19,7 +19,7 @@ module "vpc" {
 }
 
 module "acm" {
-  source            = "github.com/champ-oss/terraform-aws-acm.git?ref=v1.0.19-aae8917"
+  source            = "github.com/champ-oss/terraform-aws-acm.git?ref=v1.0.23-16da71b"
   git               = local.git
   domain_name       = "${local.git}.${data.aws_route53_zone.this.name}"
   create_wildcard   = false
@@ -44,7 +44,7 @@ data "archive_file" "this" {
 }
 
 module "lambda" {
-  source             = "github.com/champ-oss/terraform-aws-lambda.git?ref=v1.0.33-bc17799"
+  source             = "github.com/champ-oss/terraform-aws-lambda.git?ref=v1.0.35-780f6fb"
   git                = var.git
   name               = "zip"
   filename           = data.archive_file.this.output_path
