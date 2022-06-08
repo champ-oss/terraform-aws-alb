@@ -1,5 +1,5 @@
 resource "aws_lb" "this" {
-  depends_on      = [aws_s3_bucket.this, aws_s3_bucket_policy.this]
+  depends_on      = [module.s3]
   name_prefix     = var.internal ? "lb-pv-" : "lb-pb-"
   security_groups = [aws_security_group.this.id]
   subnets         = var.subnet_ids
@@ -7,7 +7,7 @@ resource "aws_lb" "this" {
   internal        = var.internal
 
   access_logs {
-    bucket  = aws_s3_bucket.this.bucket
+    bucket  = module.s3.bucket
     enabled = true
   }
 
