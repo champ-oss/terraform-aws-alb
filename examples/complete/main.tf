@@ -44,7 +44,7 @@ data "archive_file" "this" {
 }
 
 module "lambda" {
-  source             = "github.com/champ-oss/terraform-aws-lambda.git?ref=v1.0.46-13b4060"
+  source             = "github.com/champ-oss/terraform-aws-lambda.git?ref=v1.0.47-b8df7f1"
   git                = var.git
   name               = "zip"
   filename           = data.archive_file.this.output_path
