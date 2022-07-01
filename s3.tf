@@ -1,5 +1,5 @@
 module "s3" {
-  source                       = "github.com/champ-oss/terraform-aws-s3.git?ref=v1.0.10-9a378ab"
+  source                       = "github.com/champ-oss/terraform-aws-s3.git?ref=v1.0.12-cdd825c"
   git                          = var.git
   name                         = "lb"
   protect                      = var.protect
