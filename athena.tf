@@ -1,5 +1,5 @@
 resource "aws_athena_database" "this" {
-  name          = replace(aws_lb.this.name, "-", "_")
+  name          = replace(module.s3.bucket, "-", "_")
   bucket        = module.s3.bucket
   force_destroy = !var.protect
 }
@@ -58,7 +58,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS alb_logs (
             (
              "projection.enabled" = "true",
              "projection.day.type" = "date",
-             "projection.day.range" = "2022/01/01,NOW",
+             "projection.day.range" = "2020/01/01,NOW",
              "projection.day.format" = "yyyy/MM/dd",
              "projection.day.interval" = "1",
              "projection.day.interval.unit" = "DAYS",
