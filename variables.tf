@@ -59,3 +59,9 @@ variable "internal" {
   type        = bool
   default     = true
 }
+
+variable "athena_workgroup" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_named_query#workgroup"
+  type        = string
+  default     = "primary"
+}
