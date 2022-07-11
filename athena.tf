@@ -5,7 +5,7 @@ resource "aws_athena_database" "this" {
 }
 
 resource "aws_athena_named_query" "this" {
-  name      = aws_lb.this.name
+  name      = replace(module.s3.bucket, "-", "_")
   workgroup = var.athena_workgroup
   database  = aws_athena_database.this.name
   query     = <<EOT
