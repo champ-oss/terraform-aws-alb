@@ -6,10 +6,11 @@ resource "aws_athena_database" "this" {
 }
 
 resource "aws_athena_named_query" "this" {
-  name      = replace(module.s3.bucket, "-", "_")
-  workgroup = var.athena_workgroup
-  database  = aws_athena_database.this.name
-  query     = <<EOT
+  name        = replace(module.s3.bucket, "-", "_")
+  description = var.git
+  workgroup   = var.athena_workgroup
+  database    = aws_athena_database.this.name
+  query       = <<EOT
 CREATE EXTERNAL TABLE IF NOT EXISTS alb_logs (
             type string,
             time string,
