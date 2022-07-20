@@ -16,7 +16,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_s3"></a> [s3](#module\_s3) | github.com/champ-oss/terraform-aws-s3.git | v1.0.14-8341cb0 |
+| <a name="module_s3"></a> [s3](#module\_s3) | github.com/champ-oss/terraform-aws-s3.git | v1.0.16-c3af405 |
 
 ## Resources
 
