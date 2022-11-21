@@ -1,21 +1,35 @@
+terraform {
+  backend "s3" {}
+}
+
 provider "aws" {
-  region = "us-east-1"
+  region = "us-east-2"
 }
 
 locals {
   git = "terraform-aws-alb"
 }
 
-data "aws_route53_zone" "this" {
-  name = "oss.champtest.net."
+data "aws_vpcs" "this" {
+  tags = {
+    purpose = "vega"
+  }
 }
 
-module "vpc" {
-  source                   = "github.com/champ-oss/terraform-aws-vpc.git?ref=v1.0.39-9596bfc"
-  git                      = local.git
-  availability_zones_count = 2
-  retention_in_days        = 1
-  create_private_subnets   = false
+data "aws_subnets" "public" {
+  tags = {
+    purpose = "vega"
+    Type    = "Public"
+  }
+
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpcs.this.ids[0]]
+  }
+}
+
+data "aws_route53_zone" "this" {
+  name = "oss.champtest.net."
 }
 
 module "acm" {
@@ -31,8 +45,8 @@ module "this" {
   source          = "../../"
   git             = local.git
   certificate_arn = module.acm.arn
-  subnet_ids      = module.vpc.public_subnets_ids
-  vpc_id          = module.vpc.vpc_id
+  subnet_ids      = data.aws_subnets.public.ids
+  vpc_id          = data.aws_vpcs.this.ids[0]
   internal        = false
   protect         = false
 }
@@ -50,8 +64,8 @@ module "lambda" {
   filename           = data.archive_file.this.output_path
   handler            = "app.handler"
   runtime            = "python3.9"
-  vpc_id             = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.public_subnets_ids
+  vpc_id             = data.aws_vpcs.this.ids[0]
+  private_subnet_ids = data.aws_subnets.public.ids
   zone_id            = data.aws_route53_zone.this.zone_id
 
   # Make the lambda public by attaching to the ALB
