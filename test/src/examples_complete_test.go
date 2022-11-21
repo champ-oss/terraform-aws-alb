@@ -9,11 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 )
 
-var region = "us-east-1"
+var region = "us-east-2"
 var bucket = ""
 
 // TestExamplesComplete tests a typical deployment of this module
@@ -21,13 +22,14 @@ func TestExamplesComplete(t *testing.T) {
 	t.Parallel()
 
 	terraformOptions := &terraform.Options{
-		TerraformDir:  "../../examples/complete",
-		BackendConfig: map[string]interface{}{},
-		EnvVars:       map[string]string{},
-		Vars:          map[string]interface{}{},
+		TerraformDir: "../../examples/complete",
+		BackendConfig: map[string]interface{}{
+			"bucket": os.Getenv("TF_STATE_BUCKET"),
+			"key":    os.Getenv("TF_VAR_git"),
+		},
+		EnvVars: map[string]string{},
+		Vars:    map[string]interface{}{},
 	}
-	defer terraform.Destroy(t, terraformOptions)
-
 	terraform.InitAndApplyAndIdempotent(t, terraformOptions)
 	bucket = terraform.Output(t, terraformOptions, "bucket")
 
