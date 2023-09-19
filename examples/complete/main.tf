@@ -71,10 +71,12 @@ module "lambda" {
 }
 
 output "bucket" {
-  value = module.this.bucket
+  description = "bucket name"
+  value       = module.this.bucket
 }
 
 output "url" {
-  value = "https://terraform-aws-alb.oss.champtest.net"
+  description = "load balancer url"
+  value       = "https://terraform-aws-alb.oss.champtest.net"
 }
 
