@@ -1,11 +1,3 @@
-terraform {
-  backend "s3" {}
-}
-
-provider "aws" {
-  region = "us-east-2"
-}
-
 locals {
   git = "terraform-aws-alb"
 }
@@ -59,7 +51,7 @@ data "archive_file" "this" {
 
 module "lambda" {
   source             = "github.com/champ-oss/terraform-aws-lambda.git?ref=v1.0.124-ceef10f"
-  git                = var.git
+  git                = local.git
   name               = "zip"
   filename           = data.archive_file.this.output_path
   handler            = "app.handler"
@@ -77,3 +69,12 @@ module "lambda" {
   enable_vpc           = false
   dns_name             = "terraform-aws-alb.oss.champtest.net"
 }
+
+output "bucket" {
+  value       = module.this.bucket
+}
+
+output "url" {
+  value = "https://terraform-aws-alb.oss.champtest.net"
+}
+
