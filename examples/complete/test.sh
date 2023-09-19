@@ -19,4 +19,4 @@ then
 fi
 
 # Validate that bucket contains ALB logs
-aws s3 ls s3://$BUCKET
+aws s3 ls s3://$BUCKET | grep txt
