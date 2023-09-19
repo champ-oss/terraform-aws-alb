@@ -71,7 +71,7 @@ module "lambda" {
 }
 
 output "bucket" {
-  value       = module.this.bucket
+  value = module.this.bucket
 }
 
 output "url" {
