@@ -55,7 +55,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS alb_logs (
             'serialization.format' = '1',
             'input.regex' =
         '([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*):([0-9]*) ([^ ]*)[:-]([0-9]*) ([-.0-9]*) ([-.0-9]*) ([-.0-9]*) (|[-0-9]*) (-|[-0-9]*) ([-0-9]*) ([-0-9]*) \"([^ ]*) (.*) (- |[^ ]*)\" \"([^\"]*)\" ([A-Z0-9-_]+) ([A-Za-z0-9.-]*) ([^ ]*) \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" ([-.0-9]*) ([^ ]*) \"([^\"]*)\" \"([^\"]*)\" \"([^ ]*)\" \"([^\s]+?)\" \"([^\s]+)\" \"([^ ]*)\" \"([^ ]*)\"')
-            LOCATION 's3://${module.s3.bucket}/AWSLogs/${data.aws_caller_identity.this.account_id}/elasticloadbalancing/${data.aws_region.this.name}/'
+            LOCATION 's3://${module.s3.bucket}/AWSLogs/${data.aws_caller_identity.this.account_id}/elasticloadbalancing/${data.aws_region.this.region}/'
             TBLPROPERTIES
             (
              "projection.enabled" = "true",
@@ -64,7 +64,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS alb_logs (
              "projection.day.format" = "yyyy/MM/dd",
              "projection.day.interval" = "1",
              "projection.day.interval.unit" = "DAYS",
-             "storage.location.template" = "s3://${module.s3.bucket}/AWSLogs/${data.aws_caller_identity.this.account_id}/elasticloadbalancing/${data.aws_region.this.name}/$${day}"
+             "storage.location.template" = "s3://${module.s3.bucket}/AWSLogs/${data.aws_caller_identity.this.account_id}/elasticloadbalancing/${data.aws_region.this.region}/$${day}"
             )
 EOT
 }
